@@ -53,7 +53,7 @@ class NN(nn.Module):
       x = self.fc1(x)
       x = self.m(x)
       return x
-  y = (len(set([y for x,y in training_data])))
+# y = (len(set([y for x,y in training_data])))
   
 def train_network(train_loader, optimizer,loss_function, e):
   for epoch in range(e):
