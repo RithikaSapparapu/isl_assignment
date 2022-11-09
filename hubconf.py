@@ -37,9 +37,6 @@ def create_dataloaders(training_data, test_data, batch_size=64):
 
     return train_dataloader, test_dataloader
 
-training_data, test_data = load_data()
-train_loader, test_loader = create_dataloaders(training_data, test_data, batch_size = 32)
-
 class NN(nn.Module):
     def __init__(self, in_c, out_c, kern_dim, stride, padding):
         super().__init__()
@@ -117,10 +114,16 @@ def test(dataloader, model, loss_fn):
     return accuracy1,precision, recall, f1_score
 
 
-config1 = [(1,10,(3,3),1,'same')]
+def run_dynamic_model():
+    config1 = [(1,10,(3,3),1,'same')]
+    
 
-for i in config1:
-  model = NN(i[0],i[1],i[2],i[3],i[4])
-  optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-  train_network(train_loader,optimizer,loss_fun,10)
-  test(test_loader, model, loss_fun)
+    for i in config1:
+        model = NN(i[0],i[1],i[2],i[3],i[4])
+        
+        training_data, test_data = load_data()
+        train_loader, test_loader = create_dataloaders(training_data, test_data, batch_size = 32)
+        
+        optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+        train_network(train_loader,optimizer,loss_fun,10)
+        test(test_loader, model, loss_fun)
