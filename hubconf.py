@@ -55,23 +55,23 @@ class NN(nn.Module):
       return x
 # y = (len(set([y for x,y in training_data])))
   
-def train_network(train_loader, optimizer,loss_function, e):
-  for epoch in range(e):
-    running_loss = 0.0
-    for i, data in enumerate(train_loader, 0):
-        inputs, labels = data
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        labels_onehot = torch.nn.functional.one_hot(labels, num_classes= 10)
-        loss = loss_function(outputs, labels_onehot)
-        loss.backward()
-        optimizer.step()
+def train_network(train_loader, model1, optimizer,loss_function, e):
+    for epoch in range(e):
+        running_loss = 0.0
+        for i, data in enumerate(train_loader, 0):
+            inputs, labels = data
+            optimizer.zero_grad()
+            outputs = model1(inputs)
+            labels_onehot = torch.nn.functional.one_hot(labels, num_classes= 10)
+            loss = loss_function(outputs, labels_onehot)
+            loss.backward()
+            optimizer.step()
  
 
 def loss_fun(y_pred, y_ground):
-  v = -(y_ground * torch.log(y_pred + 0.0001))
-  v = torch.sum(v)
-  return v
+    v = -(y_ground * torch.log(y_pred + 0.0001))
+    v = torch.sum(v)
+    return v
 
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
@@ -121,5 +121,5 @@ def run_dynamic_model():
         train_loader, test_loader = create_dataloaders(training_data, test_data, batch_size = 32)
         
         optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-        train_network(train_loader,optimizer,loss_fun,10)
+        train_network(train_loader, model, optimizer,loss_fun,10)
         test(test_loader, model, loss_fun)
