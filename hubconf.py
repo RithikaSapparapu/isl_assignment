@@ -115,3 +115,12 @@ def test(dataloader, model, loss_fn):
     f1_score = F1Score(average = 'macro', num_classes = 10)
     print('f1_score :', f1_score(pred,y))
     return accuracy1,precision, recall, f1_score
+
+
+config1 = [(1,10,(3,3),1,'same')]
+
+for i in config1:
+  model = NN(i[0],i[1],i[2],i[3],i[4])
+  optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+  train_network(train_loader,optimizer,loss_fun,10)
+  test(test_loader, model, loss_fun)
